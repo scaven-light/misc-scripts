@@ -1,9 +1,35 @@
+# lll.ps1 — List Light Layers
+# A simple recursive folder lister with filtering and size info
+# Author: Light — https://github.com/scaven-light
+
 param (
     [string]$base = ".",
     [int]$depth = 0,
     [string]$filter = "*",
-    [switch]$ShowSize
+    [switch]$ShowSize,
+    [Alias('h')] [switch]$help
 )
+
+if ($help) {
+    Write-Output @"
+Usage: lll.ps1 [-base PATH] [-depth N] [-filter PATTERN] [-ShowSize] [-help|-h]
+
+  -base       Base folder to list (default: current folder)
+  -depth      How many levels deep to list subdirectories (default: 0 = only base)
+  -filter     Wildcard pattern to filter items (default: *)
+  -ShowSize   Show size for files and folders (slow for large folders)
+  -help, -h   Show this help and exit
+
+Examples:
+  ./lll.ps1 -depth 2
+  ./lll.ps1 -base 'C:\Projects' -filter '*.ps1' -ShowSize
+  Or just
+  ./lll . 2 '*.py'
+
+This script lists files and folders with optional size, depth and filtering.
+"@
+    exit
+}
 
 # Convert size to human-readable string
 function Convert-Size {
